@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengyd.dao.IMessagerecordDao">
+	<resultMap type="com.pengyd.bean.Messagerecord" id="MessagerecordResult">
+		<id property="id" column="id" />
+		<result property="sender" column="sender" />
+		<result property="receiver" column="receiver" />
+		<result property="senddate" column="senddate" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="senderstatus" column="senderstatus" />
+		<result property="receiverstatus" column="receiverstatus" />
+		<result property="status" column="status" />
+	</resultMap>
+	
+	
+	
+	<!--根据收件人的名字找到收件箱中所有的邮件  -->
+	<select id="findAllMessagerecordByReceiverName" parameterType="String" resultType="Messagerecord">
+		select id,sender,receiver,senddate,title,content,senderstatus,receiverstatus,status
+		from  messagerecord
+		where receiver=#{receiver}
+	</select>
+	
+	<!--根据发件人的名字找到收件箱中所有的邮件  -->
+	<select id="findAllMessagerecordBySenderName" parameterType="String" resultType="Messagerecord">
+		select id,sender,receiver,senddate,title,content,senderstatus,receiverstatus,status
+		from  messagerecord
+		where sender=#{sender}
+	</select>
+	
+	<!-- 根据邮件的id找到对应的邮件 -->
+	<select id="findMessagerecordById" parameterType="Long" resultType="Messagerecord">
+		select *
+		from  messagerecord
+		where id=#{id}
+	
+	</select>
+	
+	<!--保存发件信息  -->
+	<insert id="saveMessagerecord" parameterType="com.pengyd.bean.Messagerecord">
+		<selectKey resultType="long" order="BEFORE" keyProperty="id">
+			select seq_messagerecord.nextval from dual
+		</selectKey>
+		insert into messagerecord 
+		       values(seq_messagerecord.nextval,#{sender},#{receiver},#{senddate},#{title},
+		       #{content},#{senderstatus},#{receiverstatus},#{status})
+	</insert>
+	
+	<!--更新messagerrcord  -->
+	<update id="UpdateMessagerecord" parameterType="Messagerecord">
+		update messagerecord set status=#{status}
+				where id=#{id}
+	</update>
+	
+	
+	
+</mapper> 

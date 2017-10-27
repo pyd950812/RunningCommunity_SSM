@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengyd.dao.IPointrecordDao">
+	<resultMap type="Pointrecord" id="PointrecordResult">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="receivedate" column="receivedate" />
+		<result property="pointactionid" column="pointactionid"/>
+		<association property="pointaction" column="pointactionid" select="findPointactionById"></association>
+	</resultMap>
+	
+	<resultMap type="com.pengyd.bean.Pointaction" id="PointactionResult">
+		<id property="id" column="id" />
+		<result property="actionname" column="actionname"/>
+		<result property="point" column="point"/>
+		<result property="description" column="description"/>
+	</resultMap>
+	
+	<!-- 根据用户名查出该用户的所有的加分记录 -->
+	<select id="findAllPointrecordByNickName" parameterType="String" resultMap="PointrecordResult">
+		select id,nickname,receivedate,pointactionid
+		from pointrecord
+		where nickname=#{nickname}
+	</select>
+	<!-- 级联查询 -->
+	<select id="findPointactionById" parameterType="int" resultMap="PointactionResult">
+		select id,actionname,point,description
+		from pointaction
+		where id=#{pointactionid}
+	</select>
+	
+	
+	
+	
+	
+	<!--保存用户加分记录 -->
+	<insert id="insertPointcord" parameterType="Pointrecord">
+		<selectKey resultType="long" order="BEFORE" keyProperty="id">
+			select seq_pointrecord.nextval from dual
+		</selectKey>
+		insert into pointrecord
+		       values(seq_pointrecord.nextval,#{nickname},#{receivedate},#{pointactionid})
+	</insert>
+	
+
+	
+</mapper>

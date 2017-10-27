@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/jsp/register.jsp=UTF-8
+encoding//WebContent/html/activity.html=GBK
+encoding//WebContent/html/blackList.html=GBK
+encoding//WebContent/html/buddyList.html=GBK
+encoding//WebContent/html/createSpace.html=GBK
+encoding//WebContent/html/inbox.html=GBK
+encoding//WebContent/html/matchFriend.html=GBK
+encoding//WebContent/html/modify.html=GBK
+encoding//WebContent/html/noSpace.html=GBK
+encoding//WebContent/html/outbox.html=GBK
+encoding//WebContent/html/sendInfo.html=GBK
+encoding//WebContent/html/space.html=GBK
+encoding//WebContent/html/view.html=GBK
+encoding//src/com/pengyd/controller/AjaxUploadController.java=UTF-8

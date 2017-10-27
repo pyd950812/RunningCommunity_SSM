@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengyd.dao.IPointactionDao">
+	<resultMap type="Pointaction" id="PointactionResult">
+		<id property="id" column="id" />
+		<result property="actionname" column="actionname" />
+		<result property="point" column="point" />
+		<result property="description" column="description" />
+	</resultMap>
+
+	<!--根据当前积分找到对应的Graderecord对象 -->
+	<select id="findPointactionByName" parameterType="String" resultMap="PointactionResult">
+		select id,actionname,point,description
+		from pointaction
+		where actionname=#{actionname}
+	</select>
+	
+</mapper> 

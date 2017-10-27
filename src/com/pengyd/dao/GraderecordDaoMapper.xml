@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengyd.dao.IGraderecordDao">
+	<resultMap type="Graderecord" id="GraderecordResult">
+		<id property="id" column="id" />
+		<result property="minpoint" column="minpoint" />
+		<result property="maxpoint" column="maxpoint" />
+		<result property="gradename" column="gradename" />
+		<result property="iconpath" column="iconpath" />
+	
+	</resultMap>
+
+	<!--根据当前积分找到对应的Graderecord对象 -->
+	<select id="findGraderecodeByPoint" parameterType="long" resultMap="GraderecordResult">
+		select id,minpoint,maxpoint,gradename,iconpath
+		from graderecord
+		where #{point}>=minpoint and maxpoint>=#{point}
+	</select>
+	
+
+	
+	
+	
+</mapper> 

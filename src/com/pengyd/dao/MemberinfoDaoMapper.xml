@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengyd.dao.IMemberinfoDao">
+	<resultMap type="Memberinfo" id="MemberinfoResult">
+		<id property="id" column="id" />
+		<result property="nickName" column="nickname" />
+		<result property="passwd" column="password" />
+		<result property="gender" column="gender" />
+		<result property="age" column="age" />
+		<result property="email" column="email" />
+		<result property="provinceCity" column="provinceCity" />
+		<result property="address" column="address" />
+		<result property="phone" column="phone" />
+		<result property="passwdQuestion" column="passwordQuestion" />
+		<result property="passwdAnswer" column="passwordAnswer" />
+		<result property="recommender" column="recommender" />
+		<result property="point" column="point" />
+		<result property="registerdate" column="registerdate" />
+		<result property="latestdate" column="latestdate" />
+		<result property="status" column="status" />
+		<result property="isonline" column="isonline" />
+		<association property="graderecord" column="gradeid" select="findGraderecordById"></association>
+	</resultMap>
+	
+	<resultMap type="Graderecord" id="GraderecordResult">
+		<id property="id" column="id" />
+		<result property="minpoint" column="minpoint" />
+		<result property="maxpoint" column="maxpoint" />
+		<result property="gradename" column="gradename" />
+		<result property="iconpath" column="iconpath" />
+	</resultMap>	
+	
+	
+	<!--根据名字找到对应的memberinfo对象 -->
+	<select id="findMemberinfoByName" parameterType="String" resultMap="MemberinfoResult">
+		select id,nickname,password,gender,age,email,provinceCity,address,phone,passwordQuestion,
+			   passwordAnswer,recommender,point,registerdate,latestdate,status,isonline,gradeid
+		from memberinfo
+		where nickname=#{nickname}
+	</select>
+	
+	<!-- 根据 gradeid 作为参数去执行findGraderecordById ，最后把查询结果封装到Memberinfo类中的graderecord属性中-->
+	<select id="findGraderecordById" parameterType="int" resultMap="GraderecordResult">
+			select id,minpoint,maxpoint,gradename,iconpath
+			from graderecord
+			where id=#{gradeid}
+	</select>
+	
+	<!-- 插入用户 -->
+	<insert id="insertMemberinfo" parameterType="Memberinfo">
+		<selectKey resultType="long" order="BEFORE" keyProperty="id"> 
+			SELECT SEQ_COMMON.nextval FROM dual 
+		</selectKey> 
+		insert into MEMBERINFO 
+		values(SEQ_COMMON.nextval,#{nickName ,jdbcType=VARCHAR},#{passwd,jdbcType=VARCHAR},#{gender,jdbcType=VARCHAR},#{age,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{provinceCity,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{passwdQuestion,jdbcType=VARCHAR},#{passwdAnswer,jdbcType=VARCHAR},#{recommender,jdbcType=VARCHAR},#{point,jdbcType=VARCHAR},#{registerdate,jdbcType=VARCHAR},#{latestdate,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},#{isonline,jdbcType=VARCHAR},#{gradeid,jdbcType=VARCHAR})	
+	</insert>
+	
+	<!-- 更新用户信息 -->
+	<update id="updateMemberinfo" parameterType="Memberinfo">
+		update memberinfo set password=#{passwd},gender=#{gender},age=#{age},email=#{email},
+		                      provinceCity=#{provinceCity},address=#{address},phone=#{phone},
+		                      passwordQuestion=#{passwdQuestion},passwordAnswer=#{passwdAnswer},
+		                      recommender=#{recommender},point=#{point},registerdate=#{registerdate},
+		                      latestdate=#{latestdate,jdbcType=VARCHAR},status=#{status},isonline=#{isonline}
+		       where nickname=#{nickName}
+	</update>
+	
+	<!--积分前10的用户  -->
+	<select id="findMemberinfoTen"  resultMap="MemberinfoResult">
+		select id,nickname,password,gender,age,email,provinceCity,address,phone,passwordQuestion,
+			   passwordAnswer,recommender,point,registerdate,latestdate,status,isonline,gradeid
+		from memberinfo
+		order by point desc
+	</select>
+	
+	
+	<!--更新指定的用户的信息 -->
+	<update id="updateOnlyMemberinfo" parameterType="Memberinfo">
+		update memberinfo set password=#{passwd},email=#{email},
+		                      provinceCity=#{provinceCity},address=#{address},phone=#{phone},
+		                      passwordQuestion=#{passwdQuestion},passwordAnswer=#{passwdAnswer}
+		       where nickname=#{nickName}
+	</update>
+	
+	
+	
+	<!--找出在线的所有用户  -->
+	<select id="findMemberIsonline" resultType="int">
+	    select count(*)
+	    from memberinfo
+	    where isonline=1
+	</select>
+	
+	
+	
+	
+</mapper> 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengyd.dao.IMemberspaceDao">
+	<resultMap type="com.pengyd.bean.Memberspace" id="MemberspaceResult">
+		<id property="id" column="id" />
+		<result property="opinion" column="opinion" />
+		<result property="runtime" column="runtime" />
+		<result property="runplace" column="runplace" />
+		<result property="runstar" column="runstar" />
+		<result property="runhabit" column="RUNHABIT" />
+		<result property="cellphone" column="CELLPHONE" />
+		<result property="icon" column="ICON" />
+		<result property="memberid" column="MEMBERID" />
+	</resultMap>
+
+	<!--根据用户的id查找对应的memberspace -->
+	<select id="findMembersapceByInfoId" parameterType="long" resultMap="MemberspaceResult">
+		select id,opinion,runtime,runplace,runstar,RUNHABIT,CELLPHONE,ICON,MEMBERID
+		from MEMBERSPACE
+		where MEMBERID=#{id}
+	</select>
+	
+	
+	<!--插入用户的memberspace  -->
+	<insert id="insertMemberspace" parameterType="Memberspace">
+		<selectKey resultType="long" order="BEFORE" keyProperty="id">
+			select seq_memberspace.nextval from dual
+		</selectKey>
+		insert into memberspace 
+		       values(seq_memberspace.nextval,#{opinion},#{runtime},#{runplace},#{runstar},
+		       #{runhabit},#{cellphone},#{icon},#{memberid})
+	</insert>
+	
+	
+</mapper> 
